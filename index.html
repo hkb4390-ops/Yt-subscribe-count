@@ -23,12 +23,8 @@
         }
     </script>
     <style>
-        .glow-red {
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
-        }
-        .animate-pulse-fast {
-            animation: pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
+        .glow-red { box-shadow: 0 0 20px rgba(255, 0, 0, 0.3); }
+        .animate-pulse-fast { animation: pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
     </style>
 </head>
 <body class="bg-ytDark text-gray-100 min-h-screen flex flex-col font-sans">
@@ -38,7 +34,7 @@
         <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center gap-3">
                 <i class="fa-brands fa-youtube text-ytRed text-3xl"></i>
-                <h1 class="text-xl font-bold tracking-wide">YT Studio <span class="text-ytRed text-sm">Analytics & Downloader</span></h1>
+                <h1 class="text-xl font-bold tracking-wide">YT Studio <span class="text-ytRed text-sm">Hub</span></h1>
             </div>
             <div class="flex gap-2 bg-black/40 p-1 rounded-lg text-sm">
                 <button id="tabChannelBtn" onclick="switchTab('channel')" class="px-4 py-2 rounded-md font-semibold bg-ytRed text-white transition-all">
@@ -60,7 +56,7 @@
                 <h2 class="text-xl font-bold text-gray-200 mb-2 flex items-center gap-2">
                     <i class="fa-solid fa-user-gear text-ytRed"></i> Search Channel Analytics
                 </h2>
-                <p class="text-gray-400 text-sm mb-4">Channel username ya handle daalein (e.g. <code class="text-ytRed">@xyric_edits</code> ya <code class="text-ytRed">xyric_edits</code>)</p>
+                <p class="text-gray-400 text-sm mb-4">Channel handle/username (e.g. <code class="text-ytRed">@xyric_edits</code> ya <code class="text-ytRed">xyric_edits</code>)</p>
                 
                 <div class="flex flex-col sm:flex-row gap-3">
                     <div class="relative flex-1">
@@ -76,56 +72,53 @@
             <!-- Loading Spinner -->
             <div id="channelLoader" class="hidden text-center py-10">
                 <i class="fa-solid fa-circle-notch fa-spin text-4xl text-ytRed"></i>
-                <p class="mt-3 text-gray-400">Fetching channel details from API...</p>
+                <p class="mt-3 text-gray-400">Fetching API data... (Render wake-up may take 20-30s)</p>
             </div>
 
-            <!-- Channel Results Display -->
+            <!-- Channel Results -->
             <div id="channelResult" class="hidden space-y-6">
-                <!-- Profile Header -->
                 <div class="bg-ytCard p-6 rounded-2xl border border-gray-800 flex flex-col md:flex-row items-center justify-between gap-6">
                     <div class="flex flex-col md:flex-row items-center gap-5 text-center md:text-left">
-                        <img id="cAvatar" src="" alt="Channel Avatar" class="w-24 h-24 rounded-full border-2 border-ytRed object-cover shadow-md">
+                        <img id="cAvatar" src="" alt="Avatar" class="w-24 h-24 rounded-full border-2 border-ytRed object-cover shadow-md">
                         <div>
                             <h3 id="cTitle" class="text-2xl font-bold text-white">Channel Name</h3>
                             <p id="cHandle" class="text-ytRed font-medium">@username</p>
-                            <p id="cDesc" class="text-gray-400 text-xs mt-2 line-clamp-2 max-w-xl">Channel Description</p>
+                            <p id="cDesc" class="text-gray-400 text-xs mt-2 line-clamp-2 max-w-xl">Description</p>
                         </div>
                     </div>
                     
                     <div class="flex items-center gap-3">
                         <label class="flex items-center gap-2 cursor-pointer bg-black/40 px-3 py-2 rounded-lg text-xs">
                             <input type="checkbox" id="autoRefreshToggle" onchange="toggleAutoRefresh()" class="accent-ytRed">
-                            <span>Realtime Auto-Refresh (5s)</span>
+                            <span>Auto Refresh (5s)</span>
                         </label>
                     </div>
                 </div>
 
-                <!-- Stats Grid -->
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div class="bg-ytCard p-6 rounded-xl border border-gray-800 text-center relative overflow-hidden">
-                        <i class="fa-solid fa-users text-ytRed text-3xl mb-2 opacity-80"></i>
+                    <div class="bg-ytCard p-6 rounded-xl border border-gray-800 text-center relative">
+                        <i class="fa-solid fa-users text-ytRed text-3xl mb-2"></i>
                         <h4 class="text-gray-400 text-sm">Subscribers</h4>
                         <p id="cSubs" class="text-3xl font-extrabold text-white mt-1">0</p>
                         <span id="liveBadge" class="hidden absolute top-3 right-3 bg-red-600/20 text-ytRed text-[10px] px-2 py-0.5 rounded-full border border-ytRed font-bold animate-pulse-fast">LIVE</span>
                     </div>
 
                     <div class="bg-ytCard p-6 rounded-xl border border-gray-800 text-center">
-                        <i class="fa-solid fa-eye text-blue-500 text-3xl mb-2 opacity-80"></i>
-                        <h4 class="text-gray-400 text-sm">Total Channel Views</h4>
+                        <i class="fa-solid fa-eye text-blue-500 text-3xl mb-2"></i>
+                        <h4 class="text-gray-400 text-sm">Total Views</h4>
                         <p id="cViews" class="text-3xl font-extrabold text-white mt-1">0</p>
                     </div>
 
                     <div class="bg-ytCard p-6 rounded-xl border border-gray-800 text-center">
-                        <i class="fa-solid fa-video text-green-500 text-3xl mb-2 opacity-80"></i>
+                        <i class="fa-solid fa-video text-green-500 text-3xl mb-2"></i>
                         <h4 class="text-gray-400 text-sm">Total Videos</h4>
                         <p id="cVideos" class="text-3xl font-extrabold text-white mt-1">0</p>
                     </div>
                 </div>
 
-                <!-- Raw JSON View Accordion -->
                 <details class="bg-ytCard p-4 rounded-xl border border-gray-800">
-                    <summary class="cursor-pointer font-semibold text-gray-300 text-sm flex items-center justify-between">
-                        <span><i class="fa-solid fa-code mr-2 text-ytRed"></i> View Raw JSON Response</span>
+                    <summary class="cursor-pointer font-semibold text-gray-300 text-sm">
+                        <i class="fa-solid fa-code mr-2 text-ytRed"></i> Raw JSON Response
                     </summary>
                     <pre id="cRawJson" class="bg-black/80 p-4 rounded-lg mt-3 text-xs text-green-400 overflow-x-auto font-mono"></pre>
                 </details>
@@ -136,9 +129,9 @@
         <section id="videoSection" class="hidden space-y-6">
             <div class="bg-ytCard p-6 rounded-2xl border border-gray-800 shadow-xl glow-red max-w-3xl mx-auto">
                 <h2 class="text-xl font-bold text-gray-200 mb-2 flex items-center gap-2">
-                    <i class="fa-solid fa-link text-ytRed"></i> YouTube Video Link Downloader & Info
+                    <i class="fa-solid fa-link text-ytRed"></i> YouTube Video Link Downloader
                 </h2>
-                <p class="text-gray-400 text-sm mb-4">Paste video URL (e.g. <code class="text-ytRed">https://youtu.be/X8X-XyK4CYE</code>)</p>
+                <p class="text-gray-400 text-sm mb-4">Paste URL (e.g. <code class="text-ytRed">https://youtu.be/X8X-XyK4CYE</code>)</p>
                 
                 <div class="flex flex-col sm:flex-row gap-3">
                     <input type="text" id="videoUrl" placeholder="https://youtu.be/..." class="flex-1 bg-black/60 border border-gray-700 rounded-xl py-3 px-4 text-white focus:outline-none focus:border-ytRed transition">
@@ -148,16 +141,13 @@
                 </div>
             </div>
 
-            <!-- Loading Spinner -->
             <div id="videoLoader" class="hidden text-center py-10">
                 <i class="fa-solid fa-circle-notch fa-spin text-4xl text-ytRed"></i>
-                <p class="mt-3 text-gray-400">Fetching video details & generating download links...</p>
+                <p class="mt-3 text-gray-400">Fetching video & download links...</p>
             </div>
 
-            <!-- Video Results Display -->
             <div id="videoResult" class="hidden space-y-6">
                 <div class="bg-ytCard p-6 rounded-2xl border border-gray-800 grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <!-- Thumbnail & Quick Player -->
                     <div class="space-y-3">
                         <img id="vThumb" src="" alt="Thumbnail" class="w-full rounded-xl border border-gray-800 shadow-md">
                         <div class="grid grid-cols-2 gap-2 text-center text-xs">
@@ -172,7 +162,6 @@
                         </div>
                     </div>
 
-                    <!-- Details & Download Links -->
                     <div class="lg:col-span-2 space-y-4">
                         <h3 id="vTitle" class="text-xl font-bold text-white leading-snug">Video Title</h3>
                         <p id="vChannel" class="text-ytRed text-sm font-semibold">Channel Name</p>
@@ -180,19 +169,15 @@
 
                         <hr class="border-gray-800">
 
-                        <!-- Download Section -->
                         <div>
                             <h4 class="font-bold text-white mb-3 flex items-center gap-2">
-                                <i class="fa-solid fa-download text-green-500"></i> Download Links (All-in-One)
+                                <i class="fa-solid fa-download text-green-500"></i> Download Links
                             </h4>
-                            <div id="downloadContainer" class="flex flex-wrap gap-2">
-                                <!-- Dynamic download buttons will be rendered here -->
-                            </div>
+                            <div id="downloadContainer" class="flex flex-wrap gap-2"></div>
                         </div>
 
-                        <!-- Raw JSON -->
                         <details class="bg-black/40 p-3 rounded-lg border border-gray-800">
-                            <summary class="cursor-pointer text-xs text-gray-400 font-semibold">View Raw Video Response</summary>
+                            <summary class="cursor-pointer text-xs text-gray-400 font-semibold">Raw Video JSON</summary>
                             <pre id="vRawJson" class="bg-black/90 p-3 rounded mt-2 text-[11px] text-green-400 overflow-x-auto font-mono"></pre>
                         </details>
                     </div>
@@ -202,9 +187,8 @@
 
     </main>
 
-    <!-- Footer -->
     <footer class="bg-ytCard border-t border-gray-800 text-center py-4 text-xs text-gray-500">
-        <p>Powered by Rohit YouTube API Hub &copy; 2026. All rights reserved.</p>
+        <p>Powered by Rohit YouTube API Hub &copy; 2026.</p>
     </footer>
 
     <!-- JavaScript Logic -->
@@ -214,7 +198,28 @@
 
         let autoRefreshInterval = null;
 
-        // Tab Switching
+        // CORS Fallback Fetch Handler
+        async function fetchWithCORS(targetUrl) {
+            const proxyList = [
+                `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`,
+                `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`,
+                targetUrl
+            ];
+
+            for (let proxy of proxyList) {
+                try {
+                    const response = await fetch(proxy);
+                    if (response.ok) {
+                        const data = await response.json();
+                        if (data) return data;
+                    }
+                } catch (err) {
+                    console.warn(`Proxy failed: ${proxy}`, err);
+                }
+            }
+            throw new Error("Unable to reach API server.");
+        }
+
         function switchTab(tab) {
             const channelSec = document.getElementById('channelSection');
             const videoSec = document.getElementById('videoSection');
@@ -234,17 +239,10 @@
             }
         }
 
-        // Fetch Channel Information
         async function fetchChannelInfo() {
             let handle = document.getElementById('channelHandle').value.trim();
-            if (!handle) {
-                alert("Kripya channel handle ya username daalein!");
-                return;
-            }
-
-            if (!handle.startsWith('@')) {
-                handle = '@' + handle;
-            }
+            if (!handle) return alert("Channel handle daalein!");
+            if (!handle.startsWith('@')) handle = '@' + handle;
 
             const loader = document.getElementById('channelLoader');
             const result = document.getElementById('channelResult');
@@ -253,23 +251,16 @@
             result.classList.add('hidden');
 
             try {
-                const res = await fetch(`${API_INFO_BASE}/yt_channel_info?handle=${encodeURIComponent(handle)}`);
-                if (!res.ok) throw new Error("API Network error");
-                
-                const data = await res.json();
+                const targetUrl = `${API_INFO_BASE}/yt_channel_info?handle=${encodeURIComponent(handle)}`;
+                const data = await fetchWithCORS(targetUrl);
+
                 loader.classList.add('hidden');
                 result.classList.remove('hidden');
 
-                // Render Channel Info
                 document.getElementById('cTitle').innerText = data.channel_name || data.title || handle;
                 document.getElementById('cHandle').innerText = handle;
                 document.getElementById('cDesc').innerText = data.description || data.channel_description || "No description available";
-                
-                if (data.avatar || data.channel_avatar || data.profile_image) {
-                    document.getElementById('cAvatar').src = data.avatar || data.channel_avatar || data.profile_image;
-                } else {
-                    document.getElementById('cAvatar').src = "https://cdn-icons-png.flaticon.com/512/1384/1384060.png";
-                }
+                document.getElementById('cAvatar').src = data.avatar || data.channel_avatar || "https://cdn-icons-png.flaticon.com/512/1384/1384060.png";
 
                 document.getElementById('cSubs').innerText = formatNumber(data.subscriber_count || data.subscribers || 0);
                 document.getElementById('cViews').innerText = formatNumber(data.total_views || data.views || 0);
@@ -279,33 +270,26 @@
 
             } catch (err) {
                 loader.classList.add('hidden');
-                alert("Error fetching channel info: " + err.message);
+                alert("Render API abhi sleep mode me ho sakti hai. Page refresh karke dobara try karein!");
             }
         }
 
-        // Toggle Auto Refresh for Channel
         function toggleAutoRefresh() {
             const isChecked = document.getElementById('autoRefreshToggle').checked;
             const badge = document.getElementById('liveBadge');
 
             if (isChecked) {
                 badge.classList.remove('hidden');
-                autoRefreshInterval = setInterval(() => {
-                    fetchChannelInfo();
-                }, 5000);
+                autoRefreshInterval = setInterval(fetchChannelInfo, 5000);
             } else {
                 badge.classList.add('hidden');
                 clearInterval(autoRefreshInterval);
             }
         }
 
-        // Fetch Video Info and Download Links
         async function fetchVideoInfo() {
             const url = document.getElementById('videoUrl').value.trim();
-            if (!url) {
-                alert("Kripya YouTube Video URL daalein!");
-                return;
-            }
+            if (!url) return alert("Video URL daalein!");
 
             const loader = document.getElementById('videoLoader');
             const result = document.getElementById('videoResult');
@@ -314,103 +298,78 @@
             result.classList.add('hidden');
 
             try {
-                // Fetch info and download links simultaneously
-                const [infoRes, dlRes] = await Promise.allSettled([
-                    fetch(`${API_INFO_BASE}/yt_video_full_info?url=${encodeURIComponent(url)}`),
-                    fetch(`${API_DL_BASE}/yt_download_links?url=${encodeURIComponent(url)}`)
-                ]);
+                const infoUrl = `${API_INFO_BASE}/yt_video_full_info?url=${encodeURIComponent(url)}`;
+                const dlUrl = `${API_DL_BASE}/yt_download_links?url=${encodeURIComponent(url)}`;
 
-                let infoData = infoRes.status === 'fulfilled' ? await infoRes.value.json() : {};
-                let dlData = dlRes.status === 'fulfilled' ? await dlRes.value.json() : {};
+                const [infoData, dlData] = await Promise.all([
+                    fetchWithCORS(infoUrl).catch(() => ({})),
+                    fetchWithCORS(dlUrl).catch(() => ({}))
+                ]);
 
                 loader.classList.add('hidden');
                 result.classList.remove('hidden');
 
-                const title = infoData.title || dlData.title || "YouTube Video";
-                const channel = infoData.channel_name || infoData.author || dlData.channel || "Unknown Channel";
-                const views = infoData.views || infoData.view_count || dlData.views || 0;
-                const likes = infoData.likes || infoData.like_count || "N/A";
-                const duration = infoData.duration || dlData.duration || "N/A";
-                const thumb = infoData.thumbnail || dlData.thumbnail || `https://img.youtube.com/vi/${extractVideoID(url)}/hqdefault.jpg`;
+                document.getElementById('vTitle').innerText = infoData.title || dlData.title || "YouTube Video";
+                document.getElementById('vChannel').innerText = infoData.channel_name || infoData.author || dlData.channel || "Unknown Channel";
+                document.getElementById('vViews').innerHTML = `<i class="fa-solid fa-eye text-blue-400 mr-1"></i> ${formatNumber(infoData.views || dlData.views || 0)} Views`;
+                document.getElementById('vLikes').innerText = formatNumber(infoData.likes || "N/A");
+                document.getElementById('vDuration').innerText = infoData.duration || dlData.duration || "N/A";
+                document.getElementById('vThumb').src = infoData.thumbnail || dlData.thumbnail || `https://img.youtube.com/vi/${extractVideoID(url)}/hqdefault.jpg`;
 
-                document.getElementById('vTitle').innerText = title;
-                document.getElementById('vChannel').innerText = channel;
-                document.getElementById('vViews').innerHTML = `<i class="fa-solid fa-eye text-blue-400 mr-1"></i> ${formatNumber(views)} Views`;
-                document.getElementById('vLikes').innerText = formatNumber(likes);
-                document.getElementById('vDuration').innerText = duration;
-                document.getElementById('vThumb').src = thumb;
-
-                // Combined Raw JSON
                 document.getElementById('vRawJson').innerText = JSON.stringify({ video_info: infoData, download_info: dlData }, null, 2);
 
-                // Render Download Links
                 const container = document.getElementById('downloadContainer');
                 container.innerHTML = '';
-
-                // Extract links from responses
                 const links = extractDownloadLinks(infoData, dlData);
 
                 if (links.length === 0) {
-                    container.innerHTML = `<p class="text-sm text-yellow-500">Direct download links generate nahi ho sake. Neeche raw JSON check karein.</p>`;
+                    container.innerHTML = `<p class="text-xs text-yellow-400">Direct download links generate nahi ho sake.</p>`;
                 } else {
                     links.forEach(item => {
                         const btn = document.createElement('a');
                         btn.href = item.url;
                         btn.target = "_blank";
                         btn.className = "bg-ytRed hover:bg-red-700 text-white font-semibold px-4 py-2 rounded-lg text-xs flex items-center gap-2 transition shadow-md";
-                        btn.innerHTML = `<i class="fa-solid fa-download"></i> ${item.quality || 'Download'} (${item.type || 'MP4'})`;
+                        btn.innerHTML = `<i class="fa-solid fa-download"></i> ${item.quality} (${item.type})`;
                         container.appendChild(btn);
                     });
                 }
 
             } catch (err) {
                 loader.classList.add('hidden');
-                alert("Error fetching video data: " + err.message);
+                alert("Error: " + err.message);
             }
         }
 
-        // Helper: Extract Download Links from API JSON
         function extractDownloadLinks(info, dl) {
             let links = [];
-
-            const processArray = (arr) => {
+            const checkAndAdd = (arr) => {
                 if (Array.isArray(arr)) {
                     arr.forEach(item => {
                         if (typeof item === 'string' && item.startsWith('http')) {
-                            links.push({ quality: 'Direct Link', url: item, type: 'Video' });
+                            links.push({ quality: 'Download', url: item, type: 'MP4' });
                         } else if (item && item.url) {
-                            links.push({
-                                quality: item.quality || item.format || 'HD Link',
-                                url: item.url,
-                                type: item.type || (item.ext ? item.ext.toUpperCase() : 'MP4')
-                            });
+                            links.push({ quality: item.quality || 'HD', url: item.url, type: item.type || 'MP4' });
                         }
                     });
                 }
             };
 
-            if (dl.download_links) processArray(dl.download_links);
-            if (dl.links) processArray(dl.links);
-            if (dl.data) processArray(dl.data);
-            if (info.download_links) processArray(info.download_links);
-            if (info.links) processArray(info.links);
+            if (dl.download_links) checkAndAdd(dl.download_links);
+            if (dl.links) checkAndAdd(dl.links);
+            if (info.download_links) checkAndAdd(info.download_links);
 
-            // Fallback if direct link exists
             if (links.length === 0 && (dl.url || dl.download_url)) {
                 links.push({ quality: 'High Quality', url: dl.url || dl.download_url, type: 'MP4' });
             }
-
             return links;
         }
 
-        // Helper: Extract YouTube Video ID
         function extractVideoID(url) {
-            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-            const match = url.match(regExp);
+            const match = url.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/);
             return (match && match[2].length === 11) ? match[2] : '';
         }
 
-        // Helper: Format Big Numbers (e.g. 1.2M, 500K)
         function formatNumber(num) {
             if (isNaN(num)) return num;
             num = Number(num);
